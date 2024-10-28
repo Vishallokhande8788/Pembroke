@@ -1,4 +1,3 @@
-console.log("Connected");
 
 /* breeds/list/all = All breeds 
 
@@ -7,11 +6,11 @@ breed/{breedName}/images/random
 import { capitalize } from "./utils";
 //API
 const selectEl = document.querySelector("select");
-const imgEl = document.querySelector("img");
+const caroselContainer = document.querySelector(".carousel-inner");
 
 const BASE_URL = `https://dog.ceo/api/`;
 
-// get single imag eon breed
+// get (images*10) on breed
 function getDogBreed() {
   return fetch(`${BASE_URL}breeds/list/all `)
     .then((res) => res.json())
@@ -22,10 +21,10 @@ function getDogBreed() {
     .catch((error) => console.log(error));
 }
 
-function getSingleImage(breed) {
-  return fetch(`${BASE_URL}breed/${breed}/images/random`)
+function getBreedImages(breed) {
+  return fetch(`${BASE_URL}breed/${breed}/images`)
     .then((res) => res.json())
-    .then((data) => data.message)
+    .then((data) => console.log(data.message.slice(0, 10)))
     .catch((err) => console.log(err));
 }
 
@@ -42,15 +41,19 @@ function renderOption() {
     selectEl.appendChild(fragment);
   });
 }
-renderOption();
 
 console.log(selectEl);
 
 let a = selectEl.value;
 console.log(a);
 
+function rendercarousel(breed){
+  getBreedImages(breed).then((data)=> console.log(data));
+}
+
 selectEl.addEventListener("change", (event) => {
-  getSingleImage(event.target.value).then((data) => {
-    imgEl.src = data;
+  rendercarousel(event.target.value)
   });
-});
+;
+
+renderOption();
