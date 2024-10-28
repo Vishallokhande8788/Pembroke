@@ -4,12 +4,14 @@ console.log("Connected");
 
 breed/{breedName}/images/random
 */
-
+import { capitalize } from "./utils";
 //API
 const selectEl = document.querySelector("select");
+const imgEl = document.querySelector("img");
 
 const BASE_URL = `https://dog.ceo/api/`;
 
+// get single imag eon breed
 function getDogBreed() {
   return fetch(`${BASE_URL}breeds/list/all `)
     .then((res) => res.json())
@@ -20,38 +22,35 @@ function getDogBreed() {
     .catch((error) => console.log(error));
 }
 
-function RenderOption() {
+function getSingleImage(breed) {
+  return fetch(`${BASE_URL}breed/${breed}/images/random`)
+    .then((res) => res.json())
+    .then((data) => data.message)
+    .catch((err) => console.log(err));
+}
+
+// marl-render
+function renderOption() {
   getDogBreed().then((data) => {
     const fragment = document.createDocumentFragment();
     for (let breed of data) {
       const option = document.createElement("option");
-      option.textContent = breed;
+      option.textContent = capitalize(breed);
+      option.value = breed;
       fragment.appendChild(option);
     }
     selectEl.appendChild(fragment);
   });
 }
-RenderOption();
-
-
-// H.W
+renderOption();
 
 console.log(selectEl);
 
-let a= selectEl.value;
+let a = selectEl.value;
 console.log(a);
 
-selectEl.addEventListener('change', function() {
-    const selectedOption = selectEl.value;
-    console.log(selectedOption); 
+selectEl.addEventListener("change", (event) => {
+  getSingleImage(event.target.value).then((data) => {
+    imgEl.src = data;
+  });
 });
-
-
-// console.log(RenderOption())
-//console.log(data);
-//console.log(RenderOption)
-// console.log(a)
-// console.log(selectE1);
-// let a = document.getElementsByTagName("option");
-// console.log(a);
-
