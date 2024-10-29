@@ -1,59 +1,65 @@
-
-/* breeds/list/all = All breeds 
-
-breed/{breedName}/images/random
-*/
+import Carousel from "./components/Carousel";
 import { capitalize } from "./utils";
-//API
-const selectEl = document.querySelector("select");
-const caroselContainer = document.querySelector(".carousel-inner");
 
+// DOM Selection
+const selectEl = document.querySelector("select");
+const carouselContainerEl = document.querySelector(".carousel-inner");
+
+// API
 const BASE_URL = `https://dog.ceo/api/`;
 
-// get (images*10) on breed
+// === MARK: Fetch
+// Gets the list of all breeds
 function getDogBreed() {
-  return fetch(`${BASE_URL}breeds/list/all `)
+  return fetch(`${BASE_URL}breeds/list/all`)
     .then((res) => res.json())
     .then((data) => {
-      // console.log(Object.keys(data.message));
       return Object.keys(data.message);
     })
     .catch((error) => console.log(error));
 }
 
+// Gets [imagesx10] on breed
 function getBreedImages(breed) {
   return fetch(`${BASE_URL}breed/${breed}/images`)
     .then((res) => res.json())
-    .then((data) => console.log(data.message.slice(0, 10)))
+    .then((data) => data.message.slice(0, 10))
     .catch((err) => console.log(err));
 }
 
-// marl-render
-function renderOption() {
-  getDogBreed().then((data) => {
+// === MARK: Render
+// Renders options inside select
+function renderOptions() {
+  getDogBreed().then((breeds) => {
     const fragment = document.createDocumentFragment();
-    for (let breed of data) {
+
+    for (let breed of breeds) {
       const option = document.createElement("option");
       option.textContent = capitalize(breed);
       option.value = breed;
       fragment.appendChild(option);
     }
+
     selectEl.appendChild(fragment);
   });
 }
 
-console.log(selectEl);
+function renderCarousel(breed) {
+  carouselContainerEl.innerHTML = "";
 
-let a = selectEl.value;
-console.log(a);
+  carouselContainerEl.appendChild(Carousel(["giphy.webp"]));
+  carouselContainerEl.innerHTML = "";
 
-function rendercarousel(breed){
-  getBreedImages(breed).then((data)=> console.log(data));
+  getBreedImages(breed).then((images) => {
+    const carousel = Carousel(images);
+    carouselContainerEl.appendChild(carousel);
+  });
 }
 
+// Change on user select
 selectEl.addEventListener("change", (event) => {
-  rendercarousel(event.target.value)
-  });
-;
+  renderCarousel(event.target.value);
+});
 
-renderOption();
+renderOptions();
+renderCarousel("affenpinscher");
