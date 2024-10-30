@@ -2,4 +2,11 @@
 
 body {
   font-family: "Figtree", sans-serif;
+  font-family: sans-serif;
+  background-color: bisque;
+}
+@media screen and (min-width: 768) {
+  .carousel-item {
+    width: 50%;
+  }
 }

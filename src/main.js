@@ -47,11 +47,11 @@ function renderOptions() {
 function renderCarousel(breed) {
   carouselContainerEl.innerHTML = "";
 
-  carouselContainerEl.appendChild(Carousel(["giphy.webp"]));
+  carouselContainerEl.appendChild(Carousel(["giphy.webp"], "Loaing...."));
   carouselContainerEl.innerHTML = "";
 
   getBreedImages(breed).then((images) => {
-    const carousel = Carousel(images);
+    const carousel = Carousel(images, breed);
     carouselContainerEl.appendChild(carousel);
   });
 }
