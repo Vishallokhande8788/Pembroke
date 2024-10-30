@@ -1,4 +1,4 @@
-export default function (imageLinks, alt) {
+export default function (imageLinks, alt = "Dog") {
   const fragment = document.createDocumentFragment();
 
   imageLinks.forEach((imgSrc, index) => {
