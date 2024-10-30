@@ -19,9 +19,17 @@ async function getDogBreed() {
   //   .catch((error) => console.log(error));
 
   try {
+    const breeds = JSON.parse(localStorage.getItem("breeds"));
+
+    if (breeds) return breeds;
+
     const res = await fetch(`${BASE_URL}breeds/list/all`);
     const data = await res.json();
-    return Object.keys(data.message);
+    const breedsArr = Object.keys(data.message);
+
+    localStorage.setItem("breeds", JSON.stringify(breedsArr));
+
+    return breedsArr;
   } catch (error) {
     console.log(err);
   }
@@ -74,3 +82,7 @@ selectEl.addEventListener("change", (event) => {
 
 renderOptions();
 renderCarousel("affenpinscher");
+
+// localStorage.setItem("framework", "react.js");
+
+console.log(localStorage.getItem("framework"));
